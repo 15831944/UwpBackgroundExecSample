@@ -5,6 +5,8 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.ExtendedExecution;
+using Windows.ApplicationModel.ExtendedExecution.Foreground;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -39,6 +41,8 @@ namespace App1
         /// <param name="e">起動の要求とプロセスの詳細を表示します。</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
+            ExtendedExecutionRequestAsync();
+
             Frame rootFrame = Window.Current.Content as Frame;
 
             // ウィンドウに既にコンテンツが表示されている場合は、アプリケーションの初期化を繰り返さずに、
@@ -95,6 +99,24 @@ namespace App1
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: アプリケーションの状態を保存してバックグラウンドの動作があれば停止します
             deferral.Complete();
+        }
+
+        private async void ExtendedExecutionRequestAsync()
+        {
+            var newSession = new ExtendedExecutionForegroundSession();
+            newSession.Reason = ExtendedExecutionForegroundReason.Unconstrained;
+            newSession.Description = "Long Running Processing";
+            //newSession.Revoked += SessionRevoked;
+            ExtendedExecutionForegroundResult result = await newSession.RequestExtensionAsync();
+            switch (result)
+            {
+                case ExtendedExecutionForegroundResult.Allowed:
+                    break;
+
+                default:
+                case ExtendedExecutionForegroundResult.Denied:
+                    break;
+            }
         }
     }
 }

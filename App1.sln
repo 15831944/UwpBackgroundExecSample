@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.329
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App1", "App1\App1.csproj", "{A11F733E-6846-4A0A-8715-3231BFC313E3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BackGroundExec", "App1\BackGroundExec.csproj", "{A11F733E-6846-4A0A-8715-3231BFC313E3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

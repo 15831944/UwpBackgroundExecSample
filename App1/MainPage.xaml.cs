@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Windows.Storage;
 
 // 空白ページの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x411 を参照してください
 
@@ -22,9 +23,42 @@ namespace App1
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        private DispatcherTimer Timer;
+        private int Count;
+
         public MainPage()
         {
             this.InitializeComponent();
+        }
+
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+
+            // GetFolderFromPathAsync() の実行例
+            try
+            {
+                IStorageItem winFolder
+                  = await StorageFolder.GetFolderFromPathAsync(@"C:\data");
+                await (new Windows.UI.Popups.MessageDialog(winFolder.Path)).ShowAsync();
+            }
+            catch (Exception)
+            {
+            }
+
+            // タイマーの実行例
+            this.Timer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromMilliseconds(100)
+            };
+            this.Timer.Tick += TimerTick;
+            this.Timer.Start();
+        }
+
+        private void TimerTick(object sender, object e)
+        {
+            this.Count++;
+            this.textBlock.Text = this.Count.ToString();
         }
     }
 }
